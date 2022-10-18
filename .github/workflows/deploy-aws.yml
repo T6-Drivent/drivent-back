@@ -6,7 +6,7 @@ on:
 name: Build and Deploy
 jobs:
   build:
-    runs-on: drivent
+    runs-on: self-hosted
     environment: PRODUCTION
     timeout-minutes: 20
     steps:
