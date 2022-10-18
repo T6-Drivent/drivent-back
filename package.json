@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "tsc -p tsconfig.build.json",
-    "prepare": "husky install",
+    "prepare": "husky install && ts-patch install -s",
     "start": "node dist/server.js",
     "migration:run": "prisma migrate deploy",
     "migration:generate": "npm run dev:load-envs prisma migrate dev",
@@ -78,8 +78,8 @@
     "supertest": "^6.2.3",
     "ts-jest": "^26.5.5",
     "ts-node": "^10.7.0",
+    "ts-patch": "^2.0.2",
     "tsconfig-paths": "3.9.0",
-    "ttypescript": "^1.5.13",
     "typescript": "4.2.4",
     "typescript-transform-paths": "2.2.3"
   },
