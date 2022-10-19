@@ -1,0 +1,176 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Driven.t",
+    "dateExported": "2022-10-19T03:19:25.241Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "d813801a-ae5a-4d10-af86-b7485f0d03eb",
+            "name": "Users",
+            "containerId": "",
+            "created": "2022-10-19T00:56:25.559Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "1616108d-4981-4e3e-b569-e511b70fa6ef",
+            "name": "Events",
+            "containerId": "",
+            "created": "2022-10-19T01:21:06.413Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "46486787-65ed-4bfc-b950-1236d1c53976",
+            "name": "Enrollments",
+            "containerId": "",
+            "created": "2022-10-19T01:23:21.641Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "f00d322d-279c-4777-971e-bc5dbdfd9352",
+            "colId": "f1bc87ac-9066-4977-b6d4-9a8cfc16a35d",
+            "containerId": "d813801a-ae5a-4d10-af86-b7485f0d03eb",
+            "name": "Create",
+            "url": "{{URL}}/users",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2022-10-19T00:56:37.375Z",
+            "modified": "2022-10-19T00:59:30.549Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"fake_email@gmail.com\",\n  \"password\": \"fakepassword\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "201"
+                }
+            ]
+        },
+        {
+            "_id": "eb9ad4a6-d76b-4821-aabb-908723a11c08",
+            "colId": "f1bc87ac-9066-4977-b6d4-9a8cfc16a35d",
+            "containerId": "d813801a-ae5a-4d10-af86-b7485f0d03eb",
+            "name": "Sign In",
+            "url": "{{URL}}/auth/sign-in",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2022-10-19T01:06:33.611Z",
+            "modified": "2022-10-19T01:23:00.696Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"fake_email@gmail.com\",\n  \"password\": \"fakepassword\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "set-env-var",
+                    "custom": "json.token",
+                    "action": "setto",
+                    "value": "{{token}}"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "user"
+                }
+            ]
+        },
+        {
+            "_id": "16f96f80-d3d1-4d63-bca3-a6c6331cd43a",
+            "colId": "f1bc87ac-9066-4977-b6d4-9a8cfc16a35d",
+            "containerId": "46486787-65ed-4bfc-b950-1236d1c53976",
+            "name": "Create",
+            "url": "{{URL}}/enrollments",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2022-10-19T01:24:21.376Z",
+            "modified": "2022-10-19T02:35:43.647Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Fake name\",\n  \"cpf\": \"77407979103\",\n  \"birthday\": \"2020-01-01T00:00:00.000Z\",\n  \"phone\": \"(21) 98999-9999\",\n  \"address\": {\n    \"cep\": \"90830-563\",\n    \"street\": \"Fake Street\",\n    \"city\": \"Fake City\",\n    \"number\": \"12345\",\n    \"state\": \"MG\",\n    \"neighborhood\": \"Fake Neighborhood\",\n    \"addressDetail\": \"fake detail\"\n  }\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "isjson",
+                    "value": "false"
+                }
+            ]
+        },
+        {
+            "_id": "e723f27a-767e-4f4c-948e-0eb46fd2389b",
+            "colId": "f1bc87ac-9066-4977-b6d4-9a8cfc16a35d",
+            "containerId": "1616108d-4981-4e3e-b569-e511b70fa6ef",
+            "name": "Get Default Event",
+            "url": "{{URL}}/event",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2022-10-19T01:21:18.865Z",
+            "modified": "2022-10-19T01:22:39.405Z",
+            "headers": [],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "id"
+                }
+            ]
+        },
+        {
+            "_id": "71a97cc6-b85b-4c84-b1ec-f90d7b4e523f",
+            "colId": "f1bc87ac-9066-4977-b6d4-9a8cfc16a35d",
+            "containerId": "46486787-65ed-4bfc-b950-1236d1c53976",
+            "name": "Get User Enrollment",
+            "url": "{{URL}}/enrollments",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2022-10-19T01:23:29.128Z",
+            "modified": "2022-10-19T01:23:59.312Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": []
+        }
+    ]
+}
