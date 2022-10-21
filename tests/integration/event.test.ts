@@ -1,8 +1,8 @@
 import app, { init } from '@/app';
 import httpStatus from 'http-status';
 import supertest from 'supertest';
-import { createEvent } from '../factories';
-import { cleanDb } from '../helpers';
+import { createEvent, createUser } from '../factories';
+import { cleanDb, generateValidToken } from '../helpers';
 
 beforeAll(async () => {
   await init();
@@ -31,6 +31,20 @@ describe('GET /event', () => {
       logoImageUrl: event.logoImageUrl,
       startsAt: event.startsAt.toISOString(),
       endsAt: event.endsAt.toISOString(),
+      priceId: event.priceId,
     });
+  });
+});
+
+describe('GET /event/prices', () => {
+  it('should respond with status 200 and prices data if there is an event', async () => {
+    const user = await createUser();
+    const token = await generateValidToken(user);
+    await createEvent();
+
+    const response = await server.get('/event/prices').set('Authorization', `Bearer ${token}`);
+
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toHaveProperty('id');
   });
 });
