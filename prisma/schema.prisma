@@ -18,6 +18,8 @@ model User {
   updatedAt  DateTime     @updatedAt
   Session    Session[]
   Enrollment Enrollment[]
+
+  @@map("users")
 }
 
 model Session {
@@ -27,6 +29,8 @@ model Session {
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("sessions")
 }
 
 model Event {
@@ -36,8 +40,12 @@ model Event {
   logoImageUrl       String   @db.VarChar(255)
   startsAt           DateTime
   endsAt             DateTime
+  priceId            Int      @unique
+  price              Price    @relation(fields: [priceId], references: [id])
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+
+  @@map("events")
 }
 
 model Enrollment {
@@ -51,6 +59,8 @@ model Enrollment {
   Address   Address[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  @@map("enrollments")
 }
 
 model Address {
@@ -66,4 +76,19 @@ model Address {
   Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+
+  @@map("addresses")
+}
+
+model Price {
+  id           Int      @id @default(autoincrement())
+  Event        Event[]
+  online       Int
+  inPerson     Int
+  withHotel    Int
+  withoutHotel Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("prices")
 }
