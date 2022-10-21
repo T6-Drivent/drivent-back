@@ -1,9 +1,6 @@
 import dayjs from 'dayjs';
 import { Price as PrismaPrice, PrismaClient, } from '@prisma/client';
 
-import { CreateEvent } from '../src/types/event-types';
-import { Price as CreatePrice } from '../src/types/pricing-types';
-
 class Seed {
   private prisma: PrismaClient;
 
@@ -12,18 +9,18 @@ class Seed {
   }
 
   private generatePricing() {
-    const pricing: CreatePrice = {
-      inPerson: 250000,
-      online: 100000,
-      withHotel: 350000,
+    const pricing = {
+      inPerson: 25000,
+      online: 10000,
+      withHotel: 35000,
       withoutHotel: 0
     };
 
     return pricing;
   }
 
-  private generateEvent({ id }: PrismaPrice): CreateEvent {
-    const event: CreateEvent = {
+  private generateEvent({ id }: PrismaPrice) {
+    const event = {
       title: 'Driven.t',
       logoImageUrl: 'https://files.driveneducation.com.br/images/logo-rounded.png',
       backgroundImageUrl: 'linear-gradient(to right, #FA4098, #FFD77F)',
