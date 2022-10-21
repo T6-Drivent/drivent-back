@@ -3,6 +3,8 @@ services:
   drivent-postgres-test:
     image: postgres:13-alpine
     container_name: drivent-postgres-test
+    env_file:
+      - .env.test
     environment:
       POSTGRES_USER: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
