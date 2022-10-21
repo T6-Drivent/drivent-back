@@ -1,8 +1,15 @@
+import { Price as PrismaPrice } from '@/types/pricing-types';
 import { notFoundError } from '@/errors';
 import eventRepository from '@/repositories/event-repository';
 import { exclude } from '@/utils/prisma-utils';
 import { Event } from '@prisma/client';
 import dayjs from 'dayjs';
+
+export interface EventsService {
+  getFirstEvent(): Promise<GetFirstEventResult>;
+  isCurrentEventActive(): Promise<boolean>;
+  getPrices(): Promise<PrismaPrice>;
+}
 
 async function getFirstEvent(): Promise<GetFirstEventResult> {
   const event = await eventRepository.findFirst();
@@ -24,9 +31,16 @@ async function isCurrentEventActive(): Promise<boolean> {
   return now.isAfter(eventStartsAt) && now.isBefore(eventEndsAt);
 }
 
-const eventsService = {
+async function getPrices() {
+  const { price } = await eventRepository.getPrices();
+
+  return price;
+}
+
+const eventsService: EventsService = {
   getFirstEvent,
   isCurrentEventActive,
+  getPrices,
 };
 
 export default eventsService;

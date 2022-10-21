@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import { Price, PrismaClient, } from '@prisma/client';
+import { Price as PrismaPrice, PrismaClient, } from '@prisma/client';
 
-import { CreateEvent } from '../src/@types/event-types';
-import { CreatePrice } from '../src/@types/pricing-types';
+import { CreateEvent } from '../src/types/event-types';
+import { Price as CreatePrice } from '../src/types/pricing-types';
 
 class Seed {
   private prisma: PrismaClient;
@@ -22,7 +22,7 @@ class Seed {
     return pricing;
   }
 
-  private generateEvent({ id }: Price): CreateEvent {
+  private generateEvent({ id }: PrismaPrice): CreateEvent {
     const event: CreateEvent = {
       title: 'Driven.t',
       logoImageUrl: 'https://files.driveneducation.com.br/images/logo-rounded.png',
@@ -41,12 +41,10 @@ class Seed {
       await this.prisma.$queryRaw`TRUNCATE TABLE events RESTART IDENTITY CASCADE;`;
       await this.prisma.$queryRaw`TRUNCATE TABLE prices RESTART IDENTITY CASCADE;`;
   
-  
       console.log("Creating prices...\n")
       const price = await this.prisma.price.create({
         data: this.generatePricing(),
       });
-  
   
       console.log("Creating event...\n");
       await this.prisma.event.create({
