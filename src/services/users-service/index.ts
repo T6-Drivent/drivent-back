@@ -3,7 +3,12 @@ import userRepository from '@/repositories/user-repository';
 import { User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import eventsService from '../events-service';
-import { duplicatedEmailError } from './errors';
+import { duplicatedEmailError, userNotFoundError } from './errors';
+
+export interface UserService {
+  createUser({ email, password }: CreateUserParams): Promise<User>;
+  validateByIdOrFail(id: number): Promise<User>;
+}
 
 export async function createUser({ email, password }: CreateUserParams): Promise<User> {
   await canEnrollOrFail();
@@ -15,6 +20,16 @@ export async function createUser({ email, password }: CreateUserParams): Promise
     email,
     password: hashedPassword,
   });
+}
+
+async function validateUserByIdOrFail(id: number) {
+  const user = await userRepository.findById(id);
+
+  if (!user) {
+    throw userNotFoundError();
+  }
+
+  return user;
 }
 
 async function validateUniqueEmailOrFail(email: string) {
@@ -34,8 +49,9 @@ async function canEnrollOrFail() {
 
 export type CreateUserParams = Pick<User, 'email' | 'password'>;
 
-const userService = {
+const userService: UserService = {
   createUser,
+  validateByIdOrFail: validateUserByIdOrFail,
 };
 
 export * from './errors';
