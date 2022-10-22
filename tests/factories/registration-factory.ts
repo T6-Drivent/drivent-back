@@ -1,6 +1,7 @@
 import { CreateRegistrationParams, CreateRegistrationService } from '../../src/types/registration-types';
 import faker from '@faker-js/faker';
 import { Registration } from '@prisma/client';
+import { prisma } from '@/config';
 
 type GenerateRegistrationParams = Partial<CreateRegistrationParams>;
 
@@ -40,4 +41,10 @@ export function generatePrismaRegistration(params: Partial<Registration> = {}) {
   };
 
   return registration;
+}
+
+export async function createRegistration(params: Partial<Registration> = {}) {
+  return prisma.registration.create({
+    data: { ...generatePrismaRegistration(params) },
+  });
 }
