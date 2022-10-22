@@ -18,3 +18,18 @@ export async function createEvent(params: Partial<Event> = {}): Promise<Event> {
     },
   });
 }
+
+export function generatePrismaEvent({ ...props }: Partial<Event> = {}): Event {
+  return {
+    id: parseInt(faker.random.numeric(), 10),
+    backgroundImageUrl: faker.image.imageUrl(),
+    logoImageUrl: faker.image.imageUrl(),
+    title: faker.lorem.sentence(),
+    priceId: parseInt(faker.random.numeric(), 10),
+    startsAt: faker.date.future(),
+    endsAt: faker.date.past(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ...props,
+  };
+}

@@ -6,11 +6,12 @@ import { createSession } from './factories/sessions-factory';
 import { prisma } from '@/config';
 
 export async function cleanDb() {
-  await prisma.address.deleteMany({});
-  await prisma.enrollment.deleteMany({});
-  await prisma.event.deleteMany({});
-  await prisma.session.deleteMany({});
-  await prisma.user.deleteMany({});
+  await prisma.$queryRaw`TRUNCATE TABLE users RESTART IDENTITY CASCADE;`;
+  await prisma.$queryRaw`TRUNCATE TABLE events RESTART IDENTITY CASCADE;`;
+  await prisma.$queryRaw`TRUNCATE TABLE enrollments RESTART IDENTITY CASCADE;`;
+  await prisma.$queryRaw`TRUNCATE TABLE sessions RESTART IDENTITY CASCADE;`;
+  await prisma.$queryRaw`TRUNCATE TABLE addresses RESTART IDENTITY CASCADE;`;
+  await prisma.$queryRaw`TRUNCATE TABLE registrations RESTART IDENTITY CASCADE;`;
 }
 
 export async function generateValidToken(user?: User) {

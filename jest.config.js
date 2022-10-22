@@ -12,4 +12,7 @@ module.exports = {
     '@test/(.*)': '<rootDir>/tests/$1',
   },
   restoreMocks: true,
+  collectCoverage: true,
+  coverageDirectory: "coverage",
+  coverageProvider: "v8",
 };

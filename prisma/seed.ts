@@ -48,7 +48,7 @@ class Seed {
         data: this.generateEvent(price),
       });
 
-      console.log("OK")
+      console.log("OK");
     } catch (error) {
       console.error(error);
       process.exit(1);

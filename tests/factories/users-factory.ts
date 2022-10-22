@@ -14,3 +14,14 @@ export async function createUser(params: Partial<User> = {}): Promise<User> {
     },
   });
 }
+
+export function generatePrismaUser({ ...props }: Partial<User> = {}): User {
+  return {
+    id: parseInt(faker.random.numeric(), 10),
+    email: faker.internet.email(),
+    password: faker.internet.password(20),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ...props,
+  };
+}

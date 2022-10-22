@@ -11,13 +11,14 @@ datasource db {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique @db.VarChar(255)
-  password   String       @db.VarChar(255)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  Session    Session[]
-  Enrollment Enrollment[]
+  id           Int            @id @default(autoincrement())
+  email        String         @unique @db.VarChar(255)
+  password     String         @db.VarChar(255)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Session      Session[]
+  Enrollment   Enrollment[]
+  Registration Registration[]
 
   @@map("users")
 }
@@ -34,16 +35,17 @@ model Session {
 }
 
 model Event {
-  id                 Int      @id @default(autoincrement())
-  title              String   @db.VarChar(255)
-  backgroundImageUrl String   @db.VarChar(255)
-  logoImageUrl       String   @db.VarChar(255)
+  id                 Int            @id @default(autoincrement())
+  title              String         @db.VarChar(255)
+  backgroundImageUrl String         @db.VarChar(255)
+  logoImageUrl       String         @db.VarChar(255)
   startsAt           DateTime
   endsAt             DateTime
-  priceId            Int      @unique
-  price              Price    @relation(fields: [priceId], references: [id])
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  priceId            Int            @unique
+  price              Price          @relation(fields: [priceId], references: [id])
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  Registration       Registration[]
 
   @@map("events")
 }
@@ -91,4 +93,23 @@ model Price {
   updatedAt    DateTime @updatedAt
 
   @@map("prices")
+}
+
+enum RegistrationType {
+  inPerson
+  online
+}
+
+model Registration {
+  id        Int              @id @default(autoincrement())
+  user      User             @relation(fields: [userId], references: [id])
+  userId    Int              @unique
+  event     Event            @relation(fields: [eventId], references: [id])
+  eventId   Int
+  type      RegistrationType
+  charge    Int
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@map("registrations")
 }

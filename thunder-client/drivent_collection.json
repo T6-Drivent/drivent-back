@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "Driven.t",
-    "dateExported": "2022-10-19T03:19:25.241Z",
+    "dateExported": "2022-10-22T20:13:07.317Z",
     "version": "1.1",
     "folders": [
         {
@@ -24,6 +24,13 @@
             "containerId": "",
             "created": "2022-10-19T01:23:21.641Z",
             "sortNum": 30000
+        },
+        {
+            "_id": "28999d36-43c1-4487-8d7b-aa9cce10e87b",
+            "name": "Registrations",
+            "containerId": "",
+            "created": "2022-10-22T18:12:42.850Z",
+            "sortNum": 40000
         }
     ],
     "requests": [
@@ -36,7 +43,7 @@
             "method": "POST",
             "sortNum": 10000,
             "created": "2022-10-19T00:56:37.375Z",
-            "modified": "2022-10-19T00:59:30.549Z",
+            "modified": "2022-10-22T20:04:04.803Z",
             "headers": [],
             "params": [],
             "body": {
@@ -51,7 +58,8 @@
                     "action": "equal",
                     "value": "201"
                 }
-            ]
+            ],
+            "docs": "# Create User\n\n## Request\n\n| Body             | Type     | Description                        |\n| :--------------- | :------- | :--------------------------------- |\n| `email`          | `string` | **Required, must be a valid email**|\n| `password`| `string` | **Required**, must be longer than 6 char |\n\n```json\n{\n  \"email\": \"fake_email@gmail.com\",\n  \"password\": \"fakepassword\"\n}\n```\n\n## Response\n\n| Body             |  Code      |  Description                        |\n| :--------------- | :-------   | :--------------------------------- |\n| `empty`          |   `201`    | **Created**          |\n| `json`           |   `409`    | **Conflict**, the user already has an account |\n| `json`           |   `400`    | **Bad Request**, invalid request data |\n\n"
         },
         {
             "_id": "eb9ad4a6-d76b-4821-aabb-908723a11c08",
@@ -62,7 +70,7 @@
             "method": "POST",
             "sortNum": 20000,
             "created": "2022-10-19T01:06:33.611Z",
-            "modified": "2022-10-19T01:23:00.696Z",
+            "modified": "2022-10-22T20:10:50.542Z",
             "headers": [],
             "params": [],
             "body": {
@@ -89,7 +97,8 @@
                     "action": "contains",
                     "value": "user"
                 }
-            ]
+            ],
+            "docs": "# Sign In\n\n## Request\n\n| Body             | Type     | Description                        |\n| :--------------- | :------- | :--------------------------------- |\n| `email`          | `string` | **Required, must be a valid email**|\n| `password`| `string` | **Required**, must be longer than 6 char |\n\n```json\n{\n  \"email\": \"fake_email@gmail.com\",\n  \"password\": \"fakepassword\"\n}\n```\n\n## Response\n\n| Body             |  Code      |  Description                        |\n| :--------------- | :-------   | :--------------------------------- |\n| `json`          |   `200`    | **OK**, returns a token          |\n| `json`           |   `401`    | **Unauthorized**, wrong credentials |\n| `json`           |   `400`    | **Bad Request**, invalid request data |\n\n```json\n{\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"fake_email@gmail.com\"\n  },\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY2NjQ2OTE0Mn0.nreP3FJjEwohfnSynLniZ6XvhpV_HX8-FYGufb9k41c\"\n}\n```"
         },
         {
             "_id": "16f96f80-d3d1-4d63-bca3-a6c6331cd43a",
@@ -136,7 +145,7 @@
             "method": "GET",
             "sortNum": 30000,
             "created": "2022-10-19T01:21:18.865Z",
-            "modified": "2022-10-19T01:22:39.405Z",
+            "modified": "2022-10-22T20:09:15.096Z",
             "headers": [],
             "params": [],
             "tests": [
@@ -152,7 +161,8 @@
                     "action": "contains",
                     "value": "id"
                 }
-            ]
+            ],
+            "docs": "# Get Default Event\n\n## Response\n\n| Body             |  Code      |  Description                        |\n| :--------------- | :-------   | :--------------------------------- |\n| `empty`          |   `200`    | **OK**          |\n| `json`           |   `404`    | **Not Found**,  event not found|\n\n```json\n{\n  \"id\": 1,\n  \"title\": \"Driven.t\",\n  \"backgroundImageUrl\": \"linear-gradient(to right, #FA4098, #FFD77F)\",\n  \"logoImageUrl\": \"https://files.driveneducation.com.br/images/logo-rounded.png\",\n  \"startsAt\": \"2022-10-22T20:00:51.138Z\",\n  \"endsAt\": \"2022-11-12T20:00:51.138Z\",\n  \"priceId\": 1\n}\n```\n\n"
         },
         {
             "_id": "71a97cc6-b85b-4c84-b1ec-f90d7b4e523f",
@@ -171,6 +181,62 @@
                 "bearer": "{{token}}"
             },
             "tests": []
+        },
+        {
+            "_id": "e069c859-25c5-4d99-b792-cb3e53090468",
+            "colId": "f1bc87ac-9066-4977-b6d4-9a8cfc16a35d",
+            "containerId": "1616108d-4981-4e3e-b569-e511b70fa6ef",
+            "name": "Get Event Prices",
+            "url": "{{URL}}/event/prices",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2022-10-21T02:19:01.011Z",
+            "modified": "2022-10-22T20:12:21.137Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": [],
+            "docs": "# Get Event Prices\n\nThis is an authenticated route.\n\n## Response\n\n| Body             |  Code      |  Description                        |\n| :--------------- | :-------   | :--------------------------------- |\n| `empty`          |   `200`    | **OK**          |\n\n```json\n{\n  \"id\": 1,\n  \"online\": 10000,\n  \"inPerson\": 25000,\n  \"withHotel\": 35000,\n  \"withoutHotel\": 0,\n  \"createdAt\": \"2022-10-22T20:00:51.132Z\",\n  \"updatedAt\": \"2022-10-22T20:00:51.134Z\"\n}\n```\n"
+        },
+        {
+            "_id": "2f4b4b7a-c117-49fc-bf8d-e6a86c0ba465",
+            "colId": "f1bc87ac-9066-4977-b6d4-9a8cfc16a35d",
+            "containerId": "28999d36-43c1-4487-8d7b-aa9cce10e87b",
+            "name": "Create Registration",
+            "url": "{{URL}}/registrations",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2022-10-22T18:12:54.766Z",
+            "modified": "2022-10-22T20:01:11.971Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"type\": \"online\",\n  \"charge\": 1000\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "201"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "isjson",
+                    "value": "false"
+                }
+            ],
+            "docs": "# Create Registration\n\nThis is an authenticated route.\n\n## Request\n\n| Body             | Type     | Description                        |\n| :--------------- | :------- | :--------------------------------- |\n| `type`          | `string` | **Required, accept only 'online' and 'inPerson'**|\n| `charge`| `number` | **Required**, must be greater than zero |\n\n```json\n{\n  \"type\": \"online\",\n  \"charge\": 1000\n}\n```\n\n## Response\n\n| Body             |  Code      |  Description                        |\n| :--------------- | :-------   | :--------------------------------- |\n| `empty`          |   `201`    | **Created**          |\n| `json`           |   `409`    | **Conflict**, the user already has a registration |\n| `json`           |   `400`    | **Bad Request**, invalid request data |\n\n"
         }
     ]
 }

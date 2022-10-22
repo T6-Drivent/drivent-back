@@ -1,5 +1,11 @@
 import { prisma } from '@/config';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
+
+export interface UserRepository {
+  create(data: Prisma.UserUncheckedCreateInput): Promise<User>;
+  findByEmail(email: string, select?: Prisma.UserSelect): Promise<User>;
+  findById(id: number): Promise<User | null>;
+}
 
 async function findByEmail(email: string, select?: Prisma.UserSelect) {
   const params: Prisma.UserFindUniqueArgs = {
@@ -15,15 +21,24 @@ async function findByEmail(email: string, select?: Prisma.UserSelect) {
   return prisma.user.findUnique(params);
 }
 
+async function findById(id: number): Promise<User | null> {
+  return prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
 async function create(data: Prisma.UserUncheckedCreateInput) {
   return prisma.user.create({
     data,
   });
 }
 
-const userRepository = {
+const userRepository: UserRepository = {
   findByEmail,
   create,
+  findById,
 };
 
 export default userRepository;
