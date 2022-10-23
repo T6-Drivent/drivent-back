@@ -55,3 +55,43 @@ describe('Create Registration Service', () => {
     );
   });
 });
+
+describe('Get User Event Registration Service', () => {
+  it('should be able to get the user registration', async () => {
+    const mockUser = generatePrismaUser();
+    const mockRegistration = generatePrismaRegistration({ userId: mockUser.id });
+
+    jest.spyOn(userService, 'validateByIdOrFail').mockResolvedValueOnce(mockUser);
+    jest.spyOn(enrollmentsService, 'validateByUserIdOrFail').mockResolvedValueOnce(generatePrismaEnrollment());
+    jest.spyOn(registrationRepository, 'getByUserId').mockResolvedValueOnce(mockRegistration);
+
+    await expect(registrationService.getByUserId(mockUser.id)).resolves.toEqual(mockRegistration);
+  });
+
+  it('should return an empty object when user does not have a registration yet', async () => {
+    const mockUser = generatePrismaUser();
+
+    jest.spyOn(userService, 'validateByIdOrFail').mockResolvedValueOnce(mockUser);
+    jest.spyOn(enrollmentsService, 'validateByUserIdOrFail').mockResolvedValueOnce(generatePrismaEnrollment());
+    jest.spyOn(registrationRepository, 'getByUserId').mockResolvedValueOnce(null);
+
+    await expect(registrationService.getByUserId(mockUser.id)).resolves.toEqual({});
+  });
+
+  it('should not be able to get a registration if user does not exist', async () => {
+    const mockUser = generatePrismaUser();
+
+    jest.spyOn(userRepository, 'findById').mockResolvedValueOnce(null);
+
+    await expect(registrationService.getByUserId(mockUser.id)).rejects.toEqual(userNotFoundError());
+  });
+
+  it('should not be able to get a registration if the user does not have an enrollment', async () => {
+    const mockUser = generatePrismaUser();
+
+    jest.spyOn(userService, 'validateByIdOrFail').mockResolvedValueOnce(mockUser);
+    jest.spyOn(enrollmentRepository, 'findWithAddressByUserId').mockResolvedValueOnce(null);
+
+    await expect(registrationService.getByUserId(mockUser.id)).rejects.toEqual(enrollmentNotFoundError());
+  });
+});

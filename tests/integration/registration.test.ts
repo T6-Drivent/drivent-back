@@ -44,3 +44,32 @@ describe('POST /registrations', () => {
     expect(result.body).toEqual({ message: 'User is already registered' });
   });
 });
+
+describe('GET /registrations', () => {
+  it('should return 200 and registration if it exists', async () => {
+    const event = await createEvent();
+
+    const user = await createUser();
+    const token = await generateValidToken(user);
+    await createEnrollmentWithAddress(user);
+    const registration = await createRegistration({ userId: user.id, eventId: event.id });
+
+    const result = await server.get('/registrations').set('Authorization', `Bearer ${token}`);
+
+    expect(result.status).toEqual(httpStatus.OK);
+    expect(result.body).toHaveProperty('id', registration.id);
+  });
+
+  it('should return 200 and empty object if registration does not exist', async () => {
+    await createEvent();
+
+    const user = await createUser();
+    const token = await generateValidToken(user);
+    await createEnrollmentWithAddress(user);
+
+    const result = await server.get('/registrations').set('Authorization', `Bearer ${token}`);
+
+    expect(result.status).toEqual(httpStatus.OK);
+    expect(result.body).toEqual({});
+  });
+});

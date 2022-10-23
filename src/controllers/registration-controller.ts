@@ -12,3 +12,11 @@ export async function createRegistration(req: AuthenticatedRequest, res: Respons
 
   res.status(httpStatus.CREATED).send();
 }
+
+export async function getRegistration(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req;
+
+  const registration = await registrationService.getByUserId(userId);
+
+  res.status(200).send(registration);
+}
