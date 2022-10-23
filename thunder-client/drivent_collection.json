@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "Driven.t",
-    "dateExported": "2022-10-22T20:13:07.317Z",
+    "dateExported": "2022-10-23T14:42:35.052Z",
     "version": "1.1",
     "folders": [
         {
@@ -210,7 +210,7 @@
             "method": "POST",
             "sortNum": 60000,
             "created": "2022-10-22T18:12:54.766Z",
-            "modified": "2022-10-22T20:01:11.971Z",
+            "modified": "2022-10-23T14:10:58.090Z",
             "headers": [],
             "params": [],
             "body": {
@@ -236,7 +236,39 @@
                     "value": "false"
                 }
             ],
-            "docs": "# Create Registration\n\nThis is an authenticated route.\n\n## Request\n\n| Body             | Type     | Description                        |\n| :--------------- | :------- | :--------------------------------- |\n| `type`          | `string` | **Required, accept only 'online' and 'inPerson'**|\n| `charge`| `number` | **Required**, must be greater than zero |\n\n```json\n{\n  \"type\": \"online\",\n  \"charge\": 1000\n}\n```\n\n## Response\n\n| Body             |  Code      |  Description                        |\n| :--------------- | :-------   | :--------------------------------- |\n| `empty`          |   `201`    | **Created**          |\n| `json`           |   `409`    | **Conflict**, the user already has a registration |\n| `json`           |   `400`    | **Bad Request**, invalid request data |\n\n"
+            "docs": "# Create Registration\n\nThis is an authenticated route.\n\nThe user must have an enrollment to access this route.\n\nEach user can only have ONE registration.\n\n## Request\n\n| Body             | Type     | Description                        |\n| :--------------- | :------- | :--------------------------------- |\n| `type`          | `string` | **Required, accept only 'online' and 'inPerson'**|\n| `charge`| `number` | **Required**, must be greater than zero |\n\n```json\n{\n  \"type\": \"online\",\n  \"charge\": 1000\n}\n```\n\n## Response\n\n| Body             |  Code      |  Description                        |\n| :--------------- | :-------   | :--------------------------------- |\n| `empty`          |   `201`    | **Created**          |\n| `json`           |   `409`    | **Conflict**, the user already has a registration |\n| `json`           |   `400`    | **Bad Request**, invalid request data |\n\n"
+        },
+        {
+            "_id": "2c3ec989-13ad-4777-80c1-901e6e2d8d40",
+            "colId": "f1bc87ac-9066-4977-b6d4-9a8cfc16a35d",
+            "containerId": "28999d36-43c1-4487-8d7b-aa9cce10e87b",
+            "name": "Get Registration",
+            "url": "{{URL}}/registrations",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2022-10-23T14:06:42.465Z",
+            "modified": "2022-10-23T14:11:19.035Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{token}}"
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "isjson",
+                    "value": "true"
+                }
+            ],
+            "docs": "# Get Registration\n\nThis is an authenticated route.\n\nThe user must have an enrollment to access this route.\n\nIf the user has an enrollment but doesn't have a registration yet, the response will be an empty object.\n\n## Response\n\n| Body             |  Code      |  Description                        |\n| :--------------- | :-------   | :--------------------------------- |\n| `json`          |   `200`    | **Created**          |\n\n```json\n{\n  \"id\": 1,\n  \"userId\": 1,\n  \"eventId\": 1,\n  \"type\": \"online\",\n  \"charge\": 1000,\n  \"createdAt\": \"2022-10-23T14:07:13.362Z\",\n  \"updatedAt\": \"2022-10-23T14:07:13.362Z\"\n}\n```\n\nOR\n\n```json\n{}\n```"
         }
     ]
 }
