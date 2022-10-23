@@ -4,7 +4,7 @@ import { CreateRegistration } from '../../types/registration-types';
 
 export interface RegistrationRepository {
   create(data: CreateRegistration): Promise<void>;
-  getByUserId(userId: number): Promise<Registration>;
+  getByUserId(userId: number): Promise<Registration | null>;
 }
 
 async function createRegistration(data: CreateRegistration): Promise<void> {

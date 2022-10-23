@@ -5,9 +5,11 @@ import eventsService from '@/services/events-service';
 import { registrationRepository } from '@/repositories/registration-repository';
 import { conflictError } from '../../errors/conflict-error';
 import { Registration } from '../../entities/Registration';
+import { Registration as PrismaRegistration } from '@prisma/client';
 
 export interface RegistrationService {
   create(data: CreateRegistrationService): Promise<void>;
+  getByUserId(userId: number): Promise<PrismaRegistration | object>;
 }
 
 async function ensureUserIsNotRegistered(userId: number): Promise<void> {
@@ -32,6 +34,17 @@ async function createRegistrationService(data: CreateRegistrationService): Promi
   await registrationRepository.create(registration.props);
 }
 
+async function getRegistration(userId: number): Promise<PrismaRegistration | object> {
+  await userService.validateByIdOrFail(userId);
+
+  await enrollmentsService.validateByUserIdOrFail(userId);
+
+  const registration = await registrationRepository.getByUserId(userId);
+
+  return registration || {};
+}
+
 export const registrationService: RegistrationService = {
   create: createRegistrationService,
+  getByUserId: getRegistration,
 };
