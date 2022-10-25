@@ -96,7 +96,8 @@ model Price {
 }
 
 enum RegistrationType {
-  inPerson
+  inPersonWithHotel
+  inPersonWithoutHotel
   online
 }
 
@@ -112,4 +113,54 @@ model Registration {
   updatedAt DateTime         @updatedAt
 
   @@map("registrations")
+}
+
+model Hotel {
+  id        Int      @id @default(autoincrement())
+  name      String
+  image     String
+  Room      Room[]
+  createdAt DateTime @default(now())
+
+  @@map("hotels")
+}
+
+enum CommodationType {
+  Single
+  Double
+  Triple
+}
+
+model Commodation {
+  id        Int             @id @default(autoincrement())
+  type      CommodationType
+  createdAt DateTime        @default(now())
+  Room      Room[]
+
+  @@map("commodations")
+}
+
+model Room {
+  id               Int                @id @default(autoincrement())
+  number           Int
+  hotel            Hotel              @relation(fields: [hotelId], references: [id])
+  hotelId          Int
+  RoomAvailability RoomAvailability[]
+  commodation      Commodation        @relation(fields: [commodationId], references: [id])
+  commodationId    Int
+  createdAt        DateTime           @default(now())
+
+  @@unique([hotelId, number])
+  @@map("rooms")
+}
+
+model RoomAvailability {
+  id        Int      @id @default(autoincrement())
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    Int
+  status    Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("rooms_availablity")
 }
