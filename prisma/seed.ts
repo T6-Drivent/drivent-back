@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { Price as PrismaPrice, PrismaClient, } from '@prisma/client';
+import { Price as PrismaPrice, prisma, PrismaClient, } from '@prisma/client';
+import { hotelsConstant, roomsConstant } from './constants';
 
 class Seed {
   private prisma: PrismaClient;
@@ -37,7 +38,9 @@ class Seed {
       console.log("Truncating tables...\n");
       await this.prisma.$queryRaw`TRUNCATE TABLE events RESTART IDENTITY CASCADE;`;
       await this.prisma.$queryRaw`TRUNCATE TABLE prices RESTART IDENTITY CASCADE;`;
-  
+      await this.prisma.$queryRaw`TRUNCATE TABLE hotels RESTART IDENTITY CASCADE;`;
+      await this.prisma.$queryRaw`TRUNCATE TABLE rooms RESTART IDENTITY CASCADE;`;
+      await this.prisma.$queryRaw`TRUNCATE TABLE rooms_availability RESTART IDENTITY CASCADE;`;
       console.log("Creating prices...\n")
       const price = await this.prisma.price.create({
         data: this.generatePricing(),
@@ -47,7 +50,14 @@ class Seed {
       await this.prisma.event.create({
         data: this.generateEvent(price),
       });
-
+      console.log("Creating hotels... \n");
+      await this.prisma.hotel.createMany({
+        data: hotelsConstant
+      });
+      console.log("Creating rooms... \n");
+      await this.prisma.room.createMany({
+        data: roomsConstant
+      })
       console.log("OK");
     } catch (error) {
       console.error(error);
