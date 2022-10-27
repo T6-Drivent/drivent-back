@@ -1,129 +1,154 @@
-export type Rooms = Room[]
-export interface Room {
-    number: number,
-    hotelId: number,
-    size: number
-}
-export const roomsConstant : Rooms = [
+export type Rooms = {
+  number: number,
+  hotelId: number,
+  size: number,
+  type: string
+}[]
+
+export const roomsConstant   = [
     {
       number: 101,
       hotelId: 1,
-      size: 1
+      size: 1,
+      type: 'Single'
     },
     {
       number: 102,
       hotelId: 1,
-      size: 1
+      size: 1,
+      type: 'Single'
     },
     {
       number: 103,
       hotelId: 1,
-      size: 1
+      size: 1,
+      type: 'Single'
     },
     {
       number: 104,
       hotelId: 1,
-      size: 1
+      size: 1,
+      type: 'Single'
     },
     {
       number: 201,
       hotelId: 1,
-      size: 2
+      size: 2,
+      type: 'Double'
     },
     {
       number: 202,
       hotelId: 1,
-      size: 2
+      size: 2,
+      type: 'Double'
     },
     {
       number: 203,
       hotelId: 1,
-      size: 2
+      size: 2,
+      type: 'Double'
     },
     {
       number: 204,
       hotelId: 1,
-      size: 2
+      size: 2,
+      type: 'Double'
     },
     {
       number: 101,
       hotelId: 2,
-      size: 1
+      size: 1,
+      type: 'Single'
     },
     {
       number: 102,
       hotelId: 2,
-      size: 1
+      size: 1,
+      type: 'Single'
     },
     {
       number: 103,
       hotelId: 2,
-      size: 1
+      size: 1,
+      type: 'Single'
     },
     {
       number: 104,
       hotelId: 2,
-      size: 2
+      size: 2,
+      type: 'Double'
     },
     {
       number: 201,
       hotelId: 2,
-      size: 2
+      size: 2,
+      type: 'Double'
     },
     {
       number: 202,
       hotelId: 2,
-      size: 2
+      size: 2,
+      type: 'Double'
     },
     {
       number: 203,
       hotelId: 2,
-      size: 3
+      size: 3,
+      type: 'Triple'
     },
     {
       number: 204,
       hotelId: 2,
-      size: 3
+      size: 3,
+      type: 'Triple'
     },
      {
       number: 101,
       hotelId: 3,
-      size: 2
+      size: 2,
+      type: 'Double'
     },
     {
       number: 102,
       hotelId: 3,
-      size: 2
+      size: 2,
+      type: 'Double'
     },
     {
       number: 103,
       hotelId: 3,
-      size: 2
+      size: 2,
+      type: 'Double'
     },
     {
       number: 104,
       hotelId: 3,
-      size: 2
+      size: 2,
+      type: 'Double'
     },
     {
       number: 201,
       hotelId: 3,
-      size: 3
+      size: 3,
+      type: 'Triple'
     },
     {
       number: 202,
       hotelId: 3,
-      size: 3
+      size: 3,
+      type: 'Triple'
     },
     {
       number: 203,
       hotelId: 3,
-      size: 3
+      size: 3,
+      type: 'Triple'
     },
     {
       number: 204,
       hotelId: 3,
-      size: 3
+      size: 3,
+      type: 'Triple'
     },
 
   ]

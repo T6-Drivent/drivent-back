@@ -24,7 +24,7 @@ async function sumVacancyRelatedToHotel(id: number) {
 
   const {
     _sum: { hotelId: filled },
-  } = await prisma.roomAvailability.aggregate({
+  } = await prisma.reservation.aggregate({
     _sum: {
       hotelId: true,
     },
@@ -38,7 +38,44 @@ async function sumVacancyRelatedToHotel(id: number) {
   return available;
 }
 
+async function findById(hotel: number, room: number) {
+  const response = await prisma.hotel.findUnique({
+    select: {
+      name: true,
+      image: true,
+      Room: {
+        select: {
+          number: true,
+          type: true,
+          Reservation: {
+            select: {
+              userId: true,
+            },
+            where: {
+              roomId: room,
+            },
+          },
+        },
+        where: {
+          id: room,
+        },
+      },
+    },
+    where: {
+      id: hotel,
+    },
+  });
+
+  return {
+    name: response.name,
+    image: response.image,
+    room: `${response.Room[0].number} (${response.Room[0].type})`,
+    reservations: response.Room[0].Reservation,
+  };
+}
+
 export const hotelRepository = {
   findAll: findAll,
   sumVacancyRelatedToHotel: sumVacancyRelatedToHotel,
+  findById,
 };

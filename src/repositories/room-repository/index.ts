@@ -5,10 +5,12 @@ async function getRoomsByHotel(id: number) {
     select: {
       id: true,
       number: true,
+      hotelId: true,
       size: true,
-      RoomAvailability: {
+      Reservation: {
         select: {
           id: true,
+          userId: true,
         },
         where: {
           hotelId: id,
@@ -21,34 +23,31 @@ async function getRoomsByHotel(id: number) {
   });
 }
 
-async function checkIfUserHasReservation(user: number) {
-  return await prisma.roomAvailability.findFirst({
-    where: {
-      userId: user,
-    },
-  });
-}
-
-async function deleteRoomReservation(room: number) {
-  return await prisma.roomAvailability.delete({
+async function checkWithRoomExists(room: number) {
+  return await prisma.room.findUnique({
     where: {
       id: room,
     },
   });
 }
-async function createRoomReservation(user: number, hotel: number, room: number) {
-  return await prisma.roomAvailability.create({
-    data: {
-      userId: user,
-      roomId: room,
-      hotelId: hotel,
+
+async function checkRoomCapacity(room: number) {
+  return await prisma.room.findUnique({
+    select: {
+      size: true,
+      Reservation: {
+        select: {
+          id: true,
+        },
+      },
+    },
+    where: {
+      id: room,
     },
   });
 }
-
 export const roomRepository = {
-  getRoomsByHotel,
-  checkIfUserHasReservation,
-  deleteRoomReservation,
-  createRoomReservation,
+  getRooms: getRoomsByHotel,
+  checkExistance: checkWithRoomExists,
+  checkCapacity: checkRoomCapacity,
 };

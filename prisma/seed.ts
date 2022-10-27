@@ -40,7 +40,7 @@ class Seed {
       await this.prisma.$queryRaw`TRUNCATE TABLE prices RESTART IDENTITY CASCADE;`;
       await this.prisma.$queryRaw`TRUNCATE TABLE hotels RESTART IDENTITY CASCADE;`;
       await this.prisma.$queryRaw`TRUNCATE TABLE rooms RESTART IDENTITY CASCADE;`;
-      await this.prisma.$queryRaw`TRUNCATE TABLE rooms_availability RESTART IDENTITY CASCADE;`;
+      await this.prisma.$queryRaw`TRUNCATE TABLE reservations RESTART IDENTITY CASCADE;`;
       console.log("Creating prices...\n")
       const price = await this.prisma.price.create({
         data: this.generatePricing(),
