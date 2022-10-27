@@ -11,14 +11,15 @@ datasource db {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  email        String         @unique @db.VarChar(255)
-  password     String         @db.VarChar(255)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  Session      Session[]
-  Enrollment   Enrollment[]
-  Registration Registration[]
+  id               Int                @id @default(autoincrement())
+  email            String             @unique @db.VarChar(255)
+  password         String             @db.VarChar(255)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  Session          Session[]
+  Enrollment       Enrollment[]
+  Registration     Registration[]
+  RoomAvailability RoomAvailability[]
 
   @@map("users")
 }
@@ -116,20 +117,16 @@ model Registration {
 }
 
 model Hotel {
-  id        Int      @id @default(autoincrement())
-  name      String
-  image     String
-  Room      Room[]
-  createdAt DateTime @default(now())
+  id               Int                @id @default(autoincrement())
+  name             String
+  image            String
+  commodations     String
+  Room             Room[]
+  createdAt        DateTime           @default(now())
+  RoomAvailability RoomAvailability[]
 
   @@map("hotels")
 }
-
-// enum RoomSize {
-//   Single
-//   Double
-//   Triple
-// }
 
 model Room {
   id               Int                @id @default(autoincrement())
@@ -137,7 +134,7 @@ model Room {
   hotel            Hotel              @relation(fields: [hotelId], references: [id])
   hotelId          Int
   RoomAvailability RoomAvailability[]
-  size             String
+  size             Int
   createdAt        DateTime           @default(now())
 
   @@unique([hotelId, number])
@@ -148,9 +145,13 @@ model RoomAvailability {
   id        Int      @id @default(autoincrement())
   room      Room     @relation(fields: [roomId], references: [id])
   roomId    Int
-  status    Boolean
+  hotel     Hotel    @relation(fields: [hotelId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  hotelId   Int
 
+  @@unique([userId])
   @@map("rooms_availability")
 }
