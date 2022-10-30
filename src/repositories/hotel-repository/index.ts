@@ -23,15 +23,17 @@ async function sumVacancyRelatedToHotel(id: number) {
   });
 
   const {
-    _sum: { hotelId: filled },
+    _count: { hotelId: filled },
   } = await prisma.reservation.aggregate({
-    _sum: {
+    _count: {
       hotelId: true,
     },
     where: {
       hotelId: id,
     },
   });
+
+  console.log(maxCapacity, filled);
   const occupied = filled || 0;
   const available = maxCapacity - occupied;
 
@@ -65,7 +67,6 @@ async function findById(hotel: number, room: number) {
       id: hotel,
     },
   });
-
   return {
     name: response.name,
     image: response.image,
