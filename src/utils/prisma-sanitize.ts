@@ -16,15 +16,21 @@ export function sanitizeHotelWithReservation(data: HotelWithReservation) {
 
 export function sanitizeRoomListByUserId(data: RoomsWithReservations, user: number) {
   const rooms = data.map((room) => {
+    const array = [];
+    for (let i = 0; i < room.size; i++) {
+      const subject = room.Reservation[i];
+      if (subject) {
+        if (subject.userId !== user) array.push(true);
+        else array.push('you');
+      } else {
+        array.push(false);
+      }
+    }
     return {
       id: room.id,
       hotelId: room.hotelId,
       number: room.number,
-      size: room.size,
-      reservations: room.Reservation.map((reservation) => {
-        if (reservation.userId === user) return true;
-        else return false;
-      }),
+      reservations: array.reverse(),
     };
   });
 

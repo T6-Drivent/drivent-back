@@ -6,6 +6,7 @@ async function findAll() {
       id: true,
       name: true,
       commodations: true,
+      image: true,
     },
   });
 }
@@ -33,7 +34,6 @@ async function sumVacancyRelatedToHotel(id: number) {
     },
   });
 
-  console.log(maxCapacity, filled);
   const occupied = filled || 0;
   const available = maxCapacity - occupied;
 
