@@ -3,7 +3,7 @@ import 'express-async-errors';
 import express, { Express } from 'express';
 import cors from 'cors';
 
-import { loadEnv, connectDb, disconnectDB } from '@/config';
+import { loadEnv, connectDb, disconnectDB, connectCache, disconnectCache } from '@/config';
 
 loadEnv();
 
@@ -23,11 +23,13 @@ app
   .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {
+  connectCache();
   connectDb();
   return Promise.resolve(app);
 }
 
 export async function close(): Promise<void> {
+  await disconnectCache();
   await disconnectDB();
 }
 
