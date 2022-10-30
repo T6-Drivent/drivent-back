@@ -13,11 +13,15 @@ async function createReservation(user: number, hotel: number, room: number) {
 }
 async function validateRoomCapacity(room: number) {
   const response = await roomRepository.checkCapacity(room);
-  console.log(response);
   if (response.size - response.Reservation.length === 0) throw conflictError('This room is full');
+}
+async function validateIfRoomBelongsToHotel(hotel: number, room: number) {
+  const response = await roomRepository.checkIfRoomBelongsToHotel(hotel, room);
+  if (!response) throw conflictError(`This room doesn't belong to this hotel `);
 }
 export const reservationService = {
   validateUserReservation: checkIfUserHasReservation,
   createReservation,
   validateRoomCapacity,
+  validateIfRoomBelongsToHotel,
 };

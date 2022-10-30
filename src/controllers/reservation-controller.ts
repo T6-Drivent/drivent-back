@@ -8,6 +8,7 @@ async function handleReservationCreation(req: AuthenticatedRequest, res: Respons
   await registrationService.validate(userId);
   await reservationService.validateUserReservation(userId, '');
   await reservationService.validateRoomCapacity(body.roomId);
+  await reservationService.validateIfRoomBelongsToHotel(body.hotelId, body.roomId);
   const reservation = await reservationService.createReservation(userId, body.hotelId, body.roomId);
   return res.status(200).send(reservation);
 }

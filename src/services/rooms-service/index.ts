@@ -11,7 +11,6 @@ async function ensureThatRoomExists(room: number) {
 async function retrieveRoomsByHotel(hotel: number, user: number) {
   const roomsList: RoomsWithReservations = await roomRepository.getRooms(hotel);
   const sanitizedList = sanitizeRoomListByUserId(roomsList, user);
-  console.log(sanitizedList);
   return sanitizedList;
 }
 

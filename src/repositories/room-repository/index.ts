@@ -23,10 +23,23 @@ async function getRoomsByHotel(id: number) {
   });
 }
 
-async function checkWithRoomExists(room: number) {
+async function checkIfRoomExists(room: number) {
   return await prisma.room.findUnique({
     where: {
       id: room,
+    },
+  });
+}
+
+async function checkIfRoomBelongsToHotel(hotel: number, room: number) {
+  return await prisma.room.findFirst({
+    select: {
+      id: true,
+      hotelId: true,
+    },
+    where: {
+      id: room,
+      hotelId: hotel,
     },
   });
 }
@@ -48,6 +61,7 @@ async function checkRoomCapacity(room: number) {
 }
 export const roomRepository = {
   getRooms: getRoomsByHotel,
-  checkExistance: checkWithRoomExists,
+  checkExistance: checkIfRoomExists,
   checkCapacity: checkRoomCapacity,
+  checkIfRoomBelongsToHotel,
 };
