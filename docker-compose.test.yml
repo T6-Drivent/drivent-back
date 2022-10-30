@@ -28,7 +28,7 @@ services:
       - ${REDIS_PORT}:${REDIS_PORT}
     command: redis-server --requirepass ${REDIS_PASSWORD} --port ${REDIS_PORT}
     volumes:
-      - ~data/drivent/redis-test:/var/lib/redis/data
+      - ~/data/drivent/redis-test:/var/lib/redis/data
       
   drivent-test:
     build:
