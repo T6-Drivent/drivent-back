@@ -15,9 +15,10 @@ services:
     volumes:
       - ~/data/drivent/postgres-test:/var/lib/postgresql/data
     command: postgres -p ${POSTGRES_PORT}
-  drivent-redis-development:
+
+  drivent-redis-test:
     image: redis
-    container_name: drivent-redis-development
+    container_name: drivent-redis-test
     env_file:
       - .env.test
     environment:
@@ -28,6 +29,7 @@ services:
     command: redis-server --requirepass ${REDIS_PASSWORD} --port ${REDIS_PORT}
     volumes:
       - ~data/drivent/redis-test:/var/lib/redis/data
+      
   drivent-test:
     build:
       context: .
@@ -35,7 +37,7 @@ services:
     container_name: drivent-test
     depends_on:
       - drivent-postgres-test
-      - drivent-redis-development
+      - drivent-redis-test
     logging:
       driver: 'json-file'
       options:
@@ -54,3 +56,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_URL: ${REDIS_URL}
