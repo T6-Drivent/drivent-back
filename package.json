@@ -24,11 +24,15 @@
     "test:compose": "docker-compose -f docker-compose.test.yml --env-file .env.test",
     "test:postgres": "npm run test:compose -- up -d drivent-postgres-test",
     "test:postgres:down": "npm run test:compose -- down -v",
+    "test:redis": "npm run test:compose -- up -d drivent-redis-test",
+    "test:redis:down": "npm run test:compose -- down -v",
     "test:docker:migration:run": "npm dev:compose -- drivent-development npm run test:load-envs prisma migrate deploy",
     "test:docker:migration:generate": "npm run test:load-envs prisma migrate dev",
     "dev:compose": "docker-compose -f docker-compose.development.yml --env-file .env.development",
     "dev:postgres": "npm run dev:compose -- up -d drivent-postgres-development",
     "dev:postgres:down": "npm run dev:compose -- down",
+    "dev:redis": "npm run dev:compose -- up -d drivent-redis-development",
+    "dev:redis:down": "npm run dev:compose -- down -v",
     "dev:load-envs": "dotenv -e .env.development",
     "dev:migration:run": "npm run dev:compose -- run drivent-development npm run dev:load-envs prisma migrate deploy",
     "dev:migration:generate": "npm run dev:compose -- drivent-development npm run dev:load-envs prisma migrate dev",
@@ -100,6 +104,7 @@
     "http-status": "^1.5.2",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
+    "redis": "^4.3.1",
     "reflect-metadata": "^0.1.13"
   }
 }
