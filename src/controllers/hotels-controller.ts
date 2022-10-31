@@ -12,7 +12,6 @@ async function getHotelsAndTheirInfo(req: AuthenticatedRequest, res: Response) {
   const reservation = await reservationService.validateUserReservation(userId, 'changeRoom');
   if (reservation && preference == 'false') {
     const userReservationInfo = await hotelService.gatherUserHotelReservation(reservation.hotelId, reservation.roomId);
-    console.log(userReservationInfo)
     return res.status(httpStatus.OK).send(userReservationInfo);
   }
   const hotelList = await hotelService.gatherHotelsAndTheirInfo();
