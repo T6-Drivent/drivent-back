@@ -3,9 +3,9 @@ import { RoomsWithReservations } from '@/types/room-types';
 
 export function sanitizeHotelWithReservation(data: HotelWithReservation) {
   let text = '';
-  const customers = data.reservations.length;
+  const customers = data.reservations.length - 1;
   if (customers === 1) text = 'Somente você';
-  else if (customers > 1) text = `Você e mais ${customers - 1} `;
+  else if (customers > 1) text = `Você e mais ${customers} `;
   return {
     name: data.name,
     image: data.image,
@@ -30,7 +30,7 @@ export function sanitizeRoomListByUserId(data: RoomsWithReservations, user: numb
       id: room.id,
       hotelId: room.hotelId,
       number: room.number,
-      reservations: array.reverse(),
+      reservations: array,
     };
   });
 
