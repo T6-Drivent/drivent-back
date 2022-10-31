@@ -3,9 +3,9 @@ import { RoomsWithReservations } from '@/types/room-types';
 
 export function sanitizeHotelWithReservation(data: HotelWithReservation) {
   let text = '';
-  const customers = data.reservations.length - 1;
+  const customers = data.reservations.length;
   if (customers === 1) text = 'Somente você';
-  else if (customers > 1) text = `Você e mais ${customers} `;
+  else if (customers > 1) text = `Você e mais ${customers - 1} `;
   return {
     name: data.name,
     image: data.image,
