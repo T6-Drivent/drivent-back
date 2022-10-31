@@ -3,13 +3,14 @@ import userService from '../users-service/index';
 import enrollmentsService from '../enrollments-service/index';
 import eventsService from '@/services/events-service';
 import { registrationRepository } from '@/repositories/registration-repository';
-import { conflictError } from '../../errors/conflict-error';
+import { notFoundError, conflictError } from '@/errors';
 import { Registration } from '../../entities/Registration';
 import { Registration as PrismaRegistration } from '@prisma/client';
 
 export interface RegistrationService {
   create(data: CreateRegistrationService): Promise<void>;
   getByUserId(userId: number): Promise<PrismaRegistration | object>;
+  validate(userId: number): Promise<void>;
 }
 
 async function ensureUserIsNotRegistered(userId: number): Promise<void> {
@@ -44,7 +45,13 @@ async function getRegistration(userId: number): Promise<PrismaRegistration | obj
   return registration || {};
 }
 
+async function ensureThatUserHasOneRegistration(userId: number) {
+  const response = await getRegistration(userId);
+  if (Object.keys(response).length < 1) throw notFoundError();
+}
+
 export const registrationService: RegistrationService = {
   create: createRegistrationService,
   getByUserId: getRegistration,
+  validate: ensureThatUserHasOneRegistration,
 };
