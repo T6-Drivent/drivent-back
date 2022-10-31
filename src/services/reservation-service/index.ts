@@ -2,9 +2,9 @@ import { conflictError } from '@/errors';
 import { reservationRepository } from '@/repositories/reservation-repository';
 import { roomRepository } from '@/repositories/room-repository';
 
-async function checkIfUserHasReservation(user: number, method: string) {
+async function checkIfUserHasReservation(user: number, method: any) {
   const response = await reservationRepository.validateUser(user);
-  if (method === 'hotel-render' && response) return response;
+  if (method === 'changeRoom' && response) return response;
   if (response) throw conflictError(`You already have a reservation`);
 }
 async function createReservation(user: number, hotel: number, room: number) {
@@ -19,9 +19,14 @@ async function validateIfRoomBelongsToHotel(hotel: number, room: number) {
   const response = await roomRepository.checkIfRoomBelongsToHotel(hotel, room);
   if (!response) throw conflictError(`This room doesn't belong to this hotel `);
 }
+
+async function deleteUserReservation(user: number) {
+  const response = await reservationRepository.delete(user);
+}
 export const reservationService = {
   validateUserReservation: checkIfUserHasReservation,
   createReservation,
   validateRoomCapacity,
   validateIfRoomBelongsToHotel,
+  deleteUserReservation,
 };

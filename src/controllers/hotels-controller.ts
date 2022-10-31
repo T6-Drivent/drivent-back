@@ -7,10 +7,10 @@ import { reservationService } from '@/services/reservation-service';
 
 async function getHotelsAndTheirInfo(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
-
+  const { preference } = req.query;
   await registrationService.validate(userId);
-  const reservation = await reservationService.validateUserReservation(userId, 'hotel-render');
-  if (reservation) {
+  const reservation = await reservationService.validateUserReservation(userId, 'changeRoom');
+  if (reservation && preference == 'false') {
     const userReservationInfo = await hotelService.gatherUserHotelReservation(reservation.hotelId, reservation.roomId);
     return res.status(httpStatus.OK).send(userReservationInfo);
   }

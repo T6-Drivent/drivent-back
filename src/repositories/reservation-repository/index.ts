@@ -8,10 +8,10 @@ async function checkIfUserHasReservation(user: number) {
   });
 }
 
-async function deleteRoomReservation(room: number) {
+async function deleteRoomReservation(user: number) {
   return await prisma.reservation.delete({
     where: {
-      id: room,
+      userId: user,
     },
   });
 }
